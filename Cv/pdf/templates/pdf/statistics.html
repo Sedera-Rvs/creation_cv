@@ -1,0 +1,96 @@
+{% extends "pdf/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="statistics-container">
+    <h1>Statistiques des CV</h1>
+    
+    <!-- Cartes de statistiques -->
+    <div class="stats-cards">
+        <div class="stat-card">
+            <h3>Total CV créés</h3>
+            <p class="stat-number">{{ total_cvs }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Téléchargements</h3>
+            <p class="stat-number">{{ total_downloads }}</p>
+        </div>
+    </div>
+    
+    <!-- Graphique des professions -->
+    <div class="chart-container">
+        <canvas id="professionChart"></canvas>
+    </div>
+    
+    <!-- Graphique des langues -->
+    <div class="chart-container">
+        <canvas id="languageChart"></canvas>
+    </div>
+</div>
+
+<!-- Inclure Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Graphique des professions
+const professionCtx = document.getElementById('professionChart').getContext('2d');
+new Chart(professionCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ profession_labels|safe }},
+        datasets: [{
+            label: 'CV par profession',
+            data: {{ profession_data|safe }},
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+<style>
+.statistics-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4f46e5;
+}
+
+.chart-container {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,211 @@
+{% extends "pdf/base.html" %}
+
+{% block content %}
+   <div class="search-section">
+       <h2>Rechercher des CV par date</h2>
+       <form method="GET" class="date-search-form">
+           <div class="form-group">
+               <label for="date_debut">Date de début</label>
+               <input type="date" name="date_debut" id="date_debut" value="{{ date_debut|default:'' }}">
+           </div>
+           <div class="form-group">
+               <label for="date_fin">Date de fin</label>
+               <input type="date" name="date_fin" id="date_fin" value="{{ date_fin|default:'' }}">
+           </div>
+           <button type="submit" class="search-btn">Rechercher</button>
+       </form>
+   </div>
+
+   {% for element in profile %}
+     <div class="cv-item">
+       <div class="cv-info">
+           <h4>{{ element.name }}</h4>
+           <span class="cv-date">Créé le: {{ element.date_added|date:"d/m/Y" }}</span>
+       </div>
+       <div class="cv-actions">
+           <a href="{% url 'verification_with_id' element.id %}" class="view-btn">Voir le CV</a>
+           <a href="{% url 'generer' element.id %}" class="download-btn">Télécharger le CV</a>
+       </div>
+     </div>
+   {% empty %}
+     <div class="empty-message">
+         Aucun CV trouvé pour cette période.
+     </div>
+   {% endfor %}
+
+<style>
+.search-section {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-section h2 {
+    color: #1f2937;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.date-search-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    background: #4f46e5;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+    background: #4338ca;
+}
+
+.cv-item {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin: 1rem auto;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cv-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.cv-date {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.cv-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.cv-item h4 {
+    color: #1f2937;
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.cv-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.cv-actions a {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.view-btn {
+    background: white;
+    color: #4f46e5;
+    border: 2px solid #4f46e5;
+}
+
+.view-btn::before {
+    content: "👁️";
+    font-size: 1.2rem;
+}
+
+.download-btn {
+    background: #4f46e5;
+    color: white;
+}
+
+.download-btn::before {
+    content: "📥";
+    font-size: 1.2rem;
+}
+
+.cv-actions a:hover {
+    transform: translateY(-2px);
+}
+
+.download-btn:hover {
+    background: #4338ca;
+}
+
+.view-btn:hover {
+    background: #f8fafc;
+}
+
+.empty-message {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+@media (max-width: 768px) {
+    .date-search-form {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cv-item {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        margin: 1rem;
+    }
+
+    .cv-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .cv-actions a {
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}

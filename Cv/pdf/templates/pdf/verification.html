@@ -1,0 +1,378 @@
+{% extends "pdf/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <div class="photo">
+                <img src="{{ image.url }}" alt="{{ image }}">
+            </div>
+            <div class="header-content">
+                <h1>{{ name }}</h1>
+                <h2>{{ proffession }}</h2>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="left-section">
+                <div class="contact-info">
+                    <h2>Contact</h2>
+                    <p>📧 {{ email }}</p>
+                    <p>📱 {{ phone }}</p>
+                    <p>📍 {{ address }}</p>
+                    <p>🎂 {{ birthday }}</p>
+                </div>
+                
+                <div class="languages">
+                    <h2>Langues</h2>
+                    <p>{{ language }}</p>
+                </div>
+                
+                <div class="hobbies">
+                    <h2>Loisirs</h2>
+                    <p>{{ hobbie }}</p>
+                </div>
+
+                <div class="Competence">
+                    <h2>Compétences</h2>
+                    <p>{{ skill }}</p>
+                </div>
+            </div>
+            
+            <div class="right-section">
+                <div class="section">
+                    <h2>Expériences Professionnelles</h2>
+                    <div class="experience">
+                        <p>{{ experience }}</p>
+                    </div>
+                </div>
+                
+                <div class="formation">
+                    <h2>Formation</h2>
+                    <div class="education">
+                        <p>{{ formation }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="actions">
+        <a href="{% url 'download'%}" class="action-btn">Retour à la liste</a>
+        <a href="{% url 'generer' profile.id %}" class="action-btn download-btn">Télécharger en PDF</a>
+    </div>
+</div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* Thème Classique - Bleu */
+    {% if profile.theme == 'classic' %}
+    body {
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .header {
+        background: linear-gradient(to right, #4f46e5, #6366f1);
+    }
+
+    h2 {
+        color: #4f46e5;
+    }
+
+    h2::after {
+        background: #6366f1;
+    }
+
+    .download-btn {
+        background: #4f46e5;
+    }
+    {% endif %}
+
+    /* Thème Moderne - Violet */
+    {% if profile.theme == 'modern' %}
+    body {
+        background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .header {
+        background: linear-gradient(to right, #8b5cf6, #a78bfa);
+    }
+
+    h2 {
+        color: #8b5cf6;
+    }
+
+    h2::after {
+        background: #a78bfa;
+    }
+
+    .download-btn {
+        background: #8b5cf6;
+    }
+    {% endif %}
+
+    /* Thème Élégant - Vert */
+    {% if profile.theme == 'elegant' %}
+    body {
+        background: linear-gradient(135deg, #059669, #34d399);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .header {
+        background: linear-gradient(to right, #059669, #34d399);
+    }
+
+    h2 {
+        color: #059669;
+    }
+
+    h2::after {
+        background: #34d399;
+    }
+
+    .download-btn {
+        background: #059669;
+    }
+    {% endif %}
+
+    /* Thème Créatif - Orange */
+    {% if profile.theme == 'creative' %}
+    body {
+        background: linear-gradient(135deg, #f97316, #fb923c);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .header {
+        background: linear-gradient(to right, #f97316, #fb923c);
+    }
+
+    h2 {
+        color: #f97316;
+    }
+
+    h2::after {
+        background: #fb923c;
+    }
+
+    .download-btn {
+        background: #f97316;
+    }
+    {% endif %}
+
+    /* Thème Professionnel - Gris */
+    {% if profile.theme == 'professional' %}
+    body {
+        background: linear-gradient(135deg, #4b5563, #9ca3af);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .header {
+        background: linear-gradient(to right, #4b5563, #9ca3af);
+    }
+
+    h2 {
+        color: #4b5563;
+    }
+
+    h2::after {
+        background: #9ca3af;
+    }
+
+    .download-btn {
+        background: #4b5563;
+    }
+    {% endif %}
+
+    /* Styles communs */
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .header {
+        padding: 3rem;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .photo {
+        flex-shrink: 0;
+    }
+
+    .photo img {
+        width: 150px;
+        height: 150px;
+        border-radius: 20px;
+        border: 4px solid white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+    }
+
+    .header-content h1 {
+        color: white;
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .header-content h2 {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.5rem;
+        font-weight: 400;
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .left-section {
+        background: #f8fafc;
+        border-radius: 20px;
+        padding: 2rem;
+    }
+
+    .contact-info {
+        margin-bottom: 2.5rem;
+    }
+
+    .contact-info p {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        color: #4b5563;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        border-radius: 2px;
+    }
+
+    .languages, .hobbies {
+        margin-bottom: 1.5rem;
+    }
+
+    .right-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+
+    .section, .formation {
+        background: #f8fafc;
+        border-radius: 20px;
+        padding: 1rem;
+    }
+
+    .experience, .education {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border-radius: 15px;
+        background: rgb(161, 177, 228);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .experience:hover, .education:hover {
+        transform: translateY(-5px);
+    }
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+    }
+
+    .action-btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .action-btn:not(.download-btn) {
+        background: white;
+        color: #4b5563;
+        border: 2px solid #e5e7eb;
+    }
+
+    .download-btn {
+        color: white;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 1rem;
+        }
+
+        .container {
+            border-radius: 20px;
+        }
+
+        .main-content {
+            grid-template-columns: 1fr;
+        }
+
+        .header {
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .header-content h1 {
+            font-size: 2rem;
+        }
+
+        .actions {
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
